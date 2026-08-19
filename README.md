@@ -76,6 +76,18 @@ as it grows: one place holds the palette, the stroke weights and the geometry,
 so a glyph added next year matches the ones drawn today instead of being
 eyeballed against them. `--check` is the ratchet that keeps the two in step.
 
+## Licence and what the art is not
+
+MIT — see `LICENSE`. **Every glyph here is drawn from scratch**, in
+`tools/draw_*.py`, and no console manufacturer's art is copied, traced or
+shipped. That is deliberate and it is the reason the sets exist: the obvious
+source for button prompts is a console build's own font atlas, and using one
+means asking the player to own that build. The shapes here are the generic
+public forms of the controls (a cross, a bar, a paddle, a lettered disc), not
+anyone's assets.
+
+`sets/keyboard` follows the design used in zelda3d.
+
 ## Adding a set
 
 A directory under `sets/`, a `set.json` declaring its glyphs, and an entry in
