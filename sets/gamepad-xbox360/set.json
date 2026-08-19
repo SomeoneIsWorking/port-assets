@@ -1,0 +1,33 @@
+{
+  "name": "gamepad-xbox360",
+  "description": "Xbox 360 controller button glyphs, drawn for cells as small as 18x18",
+  "authored_by": "tools/draw_xbox360.py",
+  "glyphs": [
+    "back",
+    "dpad",
+    "dpad_down",
+    "dpad_left",
+    "dpad_right",
+    "dpad_up",
+    "face_a",
+    "face_b",
+    "face_x",
+    "face_y",
+    "guide",
+    "lb",
+    "ls",
+    "ls_down",
+    "ls_left",
+    "ls_right",
+    "ls_up",
+    "lt",
+    "rb",
+    "rs",
+    "rs_down",
+    "rs_left",
+    "rs_right",
+    "rs_up",
+    "rt",
+    "start"
+  ]
+}
