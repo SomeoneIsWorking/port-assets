@@ -1,0 +1,9 @@
+{
+  "name": "devices",
+  "description": "Generic keyboard and gamepad icons for device labels",
+  "authored_by": "tools/draw_devices.py",
+  "glyphs": [
+    "gamepad",
+    "keyboard"
+  ]
+}
