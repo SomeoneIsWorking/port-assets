@@ -20,7 +20,6 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "sets" / "devices"
 INK = "#101014"
 LIGHT = "#F0F0F2"
-MID = "#C8C8CC"
 
 
 def svg(*body: str) -> str:
@@ -32,31 +31,33 @@ def svg(*body: str) -> str:
 
 def keyboard() -> str:
     keys = []
-    for y, count in ((24, 8), (34, 8), (44, 7)):
-        for x in range(count):
-            keys.append('<rect x="%d" y="%d" width="5" height="6" rx="1"/>'
-                        % (12 + x * 7, y))
-    keys.append('<rect x="24" y="54" width="25" height="6" rx="2"/>')
+    for y, start, count in ((28, 9, 8), (37, 12, 7)):
+        for index in range(count):
+            keys.append('<rect x="%d" y="%d" width="5" height="5" rx="1"/>'
+                        % (start + index * 7, y))
     return svg(
-        '<rect x="5" y="14" width="62" height="50" rx="7" fill="%s" '
-        'stroke="%s" stroke-width="5"/>' % (LIGHT, INK),
+        '<path d="M8 21 H64 Q67 21 68 25 L70 53 Q70 58 65 58 H7 '
+        'Q2 58 2 53 L4 25 Q5 21 8 21 Z" fill="%s" stroke="%s" '
+        'stroke-width="5" stroke-linejoin="round"/>' % (LIGHT, INK),
         '<g fill="%s">%s</g>' % (INK, "".join(keys)),
-        '<path d="M11 19 h50" stroke="#FFFFFF" stroke-width="3" '
-        'stroke-linecap="round" opacity="0.75"/>')
+        '<rect x="9" y="46" width="8" height="5" rx="1" fill="%s"/>' % INK,
+        '<rect x="21" y="46" width="30" height="5" rx="2" fill="%s"/>' % INK,
+        '<rect x="55" y="46" width="8" height="5" rx="1" fill="%s"/>' % INK)
 
 
 def gamepad() -> str:
     return svg(
-        '<path d="M19 22 C10 23 6 32 5 44 C4 56 9 63 16 59 L27 50 '
-        'H45 L56 59 C63 63 68 56 67 44 C66 32 62 23 53 22 '
-        'C47 22 43 27 36 27 C29 27 25 22 19 22 Z" fill="%s" '
+        '<path d="M19 23 C12 23 8 29 6 39 L4 51 C3 58 7 63 13 62 '
+        'Q16 61 20 57 L27 51 Q31 48 36 48 Q41 48 45 51 L52 57 '
+        'Q56 61 59 62 C65 63 69 58 68 51 L66 39 C64 29 60 23 53 23 '
+        'C47 23 43 27 36 27 C29 27 25 23 19 23 Z" fill="%s" '
         'stroke="%s" stroke-width="5" stroke-linejoin="round"/>' % (LIGHT, INK),
-        '<path d="M16 37 h7 v-7 h7 v7 h7 v7 h-7 v7 h-7 v-7 h-7 z" fill="%s"/>' % INK,
-        '<circle cx="52" cy="34" r="4" fill="%s"/>' % INK,
-        '<circle cx="59" cy="42" r="4" fill="%s"/>' % INK,
-        '<circle cx="45" cy="42" r="4" fill="%s"/>' % INK,
-        '<circle cx="52" cy="50" r="4" fill="%s"/>' % INK,
-        '<circle cx="36" cy="38" r="3" fill="%s"/>' % MID)
+        '<path d="M14 35 h6 v-6 h6 v6 h6 v6 h-6 v6 h-6 v-6 h-6 z" fill="%s"/>' % INK,
+        '<circle cx="52" cy="31" r="3.5" fill="%s"/>' % INK,
+        '<circle cx="60" cy="39" r="3.5" fill="%s"/>' % INK,
+        '<circle cx="44" cy="39" r="3.5" fill="%s"/>' % INK,
+        '<circle cx="52" cy="47" r="3.5" fill="%s"/>' % INK,
+        '<rect x="34" y="34" width="5" height="3" rx="1.5" fill="%s"/>' % INK)
 
 
 def build() -> dict[str, str]:
