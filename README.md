@@ -52,6 +52,10 @@ with a point filter so the pixels are the pixels.
 - **Give the same family different silhouettes as well.** A bumper is the flat
   bar across the top of the pad; a trigger is the paddle underneath. When two
   small letters blur, the outline is what is left.
+- **Device icons read from their outline first.** The keyboard is low and wide;
+  the gamepad has a narrow centre and visible handles. Dense key grids and busy
+  centre controls looked descriptive at 72 units but became a calculator and an
+  undifferentiated blob in an 18-pixel character-select cell.
 - **A direction is shown by lighting the arm, not by an interior mark.** The
   d-pad's named arm is filled; the stick's named direction hangs a solid wedge
   off the cap. Measured alternatives that failed at 18x18: an arm inset to keep
