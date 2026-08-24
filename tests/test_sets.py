@@ -19,14 +19,17 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parent.parent
+SCRATCH = ROOT / "scratch"
 sys.path.insert(0, str(ROOT))
 
 import port_assets                                              # noqa: E402
 
 SMALLEST = 18          # xmen2's font-atlas cell; the tightest consumer so far
 MIN_INK = 0.04         # fraction of the cell that must be opaque
+FONT_INDEPENDENT_SETS = {"gamepad-xbox360"}
 
 # Sets of glyphs that a player must be able to TELL APART. Membership is
 # spelled out rather than derived from the names, so adding a family is a
@@ -58,22 +61,57 @@ def cells(paths: dict[str, Path], size: int, tmp: Path) -> dict[str, bytes]:
     return out
 
 
-def main() -> int:
-    if not shutil.which("magick"):
-        print("test_sets: SKIP -- ImageMagick's `magick` is not on PATH, so "
-              "NOTHING was rasterised and no glyph was checked at its target "
-              "size. The manifest checks below did not run either.")
-        return 77                       # ctest SKIP
+def live_text_nodes(path: Path) -> int:
+    """Count SVG text nodes, including namespaced spellings such as svg:text."""
+    root = ElementTree.parse(path).getroot()
+    return sum(1 for node in root.iter()
+               if isinstance(node.tag, str)
+               and node.tag.rsplit("}", 1)[-1] == "text")
 
+
+def main() -> int:
     failures = []
-    checked = 0
-    for set_name in port_assets.sets():
+    resolved = {}
+    path_only_checked = 0
+    set_names = port_assets.sets()
+    for set_name in set_names:
         glyphs = port_assets.names(set_name)
         if not glyphs:
             failures.append("%s declares no glyphs at all" % set_name)
             continue
         paths = {g: port_assets.path(set_name, g) for g in glyphs}
-        with tempfile.TemporaryDirectory(prefix="port-assets-test-") as tmp:
+        resolved[set_name] = paths
+        if set_name not in FONT_INDEPENDENT_SETS:
+            continue
+        for name, path in paths.items():
+            try:
+                count = live_text_nodes(path)
+            except ElementTree.ParseError as exc:
+                failures.append("%s/%s is malformed SVG: %s"
+                                % (set_name, name, exc))
+                continue
+            path_only_checked += 1
+            if count:
+                failures.append(
+                    "%s/%s contains %d live SVG text node(s) -- its pixels "
+                    "would depend on the fonts installed on the host"
+                    % (set_name, name, count))
+
+    if not shutil.which("magick"):
+        if failures:
+            for failure in failures:
+                print("  FAIL " + failure, file=sys.stderr)
+            return 1
+        print("test_sets: SKIP -- ImageMagick's `magick` is not on PATH, so "
+              "nothing was rasterised at its target size. Manifest and "
+              "path-only checks passed for %d glyph(s)." % path_only_checked)
+        return 77                       # ctest SKIP
+
+    checked = 0
+    SCRATCH.mkdir(parents=True, exist_ok=True)
+    for set_name, paths in resolved.items():
+        with tempfile.TemporaryDirectory(prefix="port-assets-test-",
+                                         dir=SCRATCH) as tmp:
             raster = cells(paths, SMALLEST, Path(tmp))
 
         for name, px in raster.items():
@@ -100,10 +138,11 @@ def main() -> int:
                             % (set_name, a, b, SMALLEST))
 
     print("test_sets: %d set(s), %d glyph(s) rasterised at %dpx, %d family "
-          "distinctness check(s)"
-          % (len(port_assets.sets()), checked, SMALLEST,
+          "distinctness check(s), %d path-only glyph check(s)"
+          % (len(set_names), checked, SMALLEST,
              sum(len(f) * (len(f) - 1) // 2
-                 for fs in FAMILIES.values() for f in fs)))
+                 for fs in FAMILIES.values() for f in fs),
+             path_only_checked))
     if failures:
         for f in failures:
             print("  FAIL " + f, file=sys.stderr)

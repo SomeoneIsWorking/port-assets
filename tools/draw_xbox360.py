@@ -36,7 +36,6 @@ WHITE = "#FFFFFF"
 BODY_DARK = "#303030"
 FACE = {"a": "#5FB13A", "b": "#D13B33", "x": "#2E6DB4", "y": "#E8B21F"}
 
-FONT = 'font-family="DejaVu Sans,Verdana,sans-serif" font-weight="bold"'
 HEAD = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72"'
         ' width="72" height="72">\n')
 TAIL = "</svg>\n"
@@ -46,19 +45,26 @@ def svg(*body: str) -> str:
     return HEAD + "".join("  " + line + "\n" for line in body) + TAIL
 
 
-def text(x, y, size, fill, s, length=None):
-    fit = (' textLength="%d" lengthAdjust="spacingAndGlyphs"' % length
-           if length else "")
-    return ('<text x="%d" y="%d" %s font-size="%d" fill="%s" '
-            'text-anchor="middle"%s>%s</text>' % (x, y, FONT, size, fill, fit, s))
-
-
 # ---- face buttons --------------------------------------------------------
+FACE_MARK = {
+    "a": ('<path fill="%s" fill-rule="evenodd" d="M15 52 29 18h14l14 34H47'
+          'l-3.2-8H28.2L25 52Zm16.4-16h9.2L36 24.5Z"/>' % WHITE),
+    "b": ('<path fill="%s" fill-rule="evenodd" d="M19 18h19c10 0 16 4.5 16 12'
+          ' 0 4.2-2.2 7.4-6.1 9.2C53 40.9 56 44.7 56 49c0 1-.1 2-.4 3H19Z'
+          'm10 7v9h8.5c4.5 0 7-1.5 7-4.5s-2.5-4.5-7-4.5Zm0 16v5h9.5c5 0'
+          ' 7.5-.8 7.5-2.5S43.5 41 38.5 41Z"/>' % WHITE),
+    "x": ('<path fill="%s" d="M16 18h11l9 11.5L45 18h11L41.5 35 56 52H45'
+          'l-9-11.5L27 52H16l14.5-17Z"/>' % WHITE),
+    "y": ('<path fill="%s" d="M15 18h11l10 13 10-13h11L41 39v13H31V39Z"/>'
+          % WHITE),
+}
+
+
 def face(letter: str) -> str:
     return svg(
         '<circle cx="36" cy="36" r="30" fill="%s" stroke="%s" stroke-width="6"/>'
         % (FACE[letter], DARK),
-        text(36, 52, 46, WHITE, letter.upper()))
+        FACE_MARK[letter])
 
 
 # ---- shoulders and triggers ----------------------------------------------
@@ -71,6 +77,26 @@ def face(letter: str) -> str:
 # across the top of the pad, a trigger is the paddle underneath it, and at very
 # small sizes the silhouette is what survives when the two letters have blurred
 # into one grey smudge. Two cues, so neither has to carry it alone.
+SHOULDER_MARK = {
+    "lb": ('<path fill="%s" fill-rule="evenodd" d="M10 23h7v18h13v7H10Zm24 0h13'
+           'c8 0 13 3.2 13 8.5 0 3-1.8 5.4-4.8 6.8C59 39.6 61 42.3 61 45.5'
+           'c0 .9-.1 1.7-.4 2.5H34Zm7 5v7h5.5c4 0 6.5-1.2 6.5-3.5S50.5 28'
+           ' 46.5 28Zm0 12v3h6.5c3.7 0 5.5-.5 5.5-1.5S51.2 40 47.5 40Z"/>'
+           % DARK),
+    "rb": ('<path fill="%s" fill-rule="evenodd" d="M10 23h14c8 0 13 4 13 10.5'
+           ' 0 4-2 7-5.7 8.8L39 48h-9l-6.4-5H17v5h-7Zm7 6v8h6c4.5 0 7-1.4'
+           ' 7-4s-2.5-4-7-4Zm23-6h10c8 0 13 3.2 13 8.5 0 3-1.8 5.4-4.8 6.8'
+           'C62 39.6 64 42.3 64 45.5c0 .9-.1 1.7-.4 2.5H40Zm7 5v7h2.5c4 0'
+           ' 6.5-1.2 6.5-3.5S53.5 28 49.5 28Zm0 12v3h3.5c3.7 0 5.5-.5'
+           ' 5.5-1.5S54.2 40 50.5 40Z"/>' % DARK),
+    "lt": ('<path fill="%s" d="M10 22h8v18h15v8H10Zm23 0h30v8H52v18h-8V30H33Z"/>'
+           % DARK),
+    "rt": ('<path fill="%s" fill-rule="evenodd" d="M8 22h15c9 0 14 4.3 14 11.2'
+           ' 0 4.1-2.1 7.3-6 9.1l8 5.7h-10l-6.3-5H16v5H8Zm8 7v8h6.5c4.5 0'
+           ' 7-1.4 7-4s-2.5-4-7-4Zm21-7h28v8H55v18h-8V30H37Z"/>' % DARK),
+}
+
+
 def shoulder(name: str) -> str:
     if name.endswith("b"):                       # bumper: a squat flat bar
         shape = ('<rect x="2" y="18" width="68" height="36" rx="16" fill="%s" '
@@ -80,7 +106,7 @@ def shoulder(name: str) -> str:
                  'v14 a22 22 0 0 1 -22 22 h-12 a22 22 0 0 1 -22 -22 z" '
                  'fill="%s" stroke="%s" stroke-width="5" '
                  'stroke-linejoin="round"/>' % (LIGHT, DARK))
-    return svg(shape, text(36, 46, 30, DARK, name.upper(), length=50))
+    return svg(shape, SHOULDER_MARK[name])
 
 
 # ---- menu buttons --------------------------------------------------------
