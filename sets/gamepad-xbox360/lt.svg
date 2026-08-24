@@ -1,4 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
   <path d="M8 18 a10 10 0 0 1 10 -8 h36 a10 10 0 0 1 10 8 v14 a22 22 0 0 1 -22 22 h-12 a22 22 0 0 1 -22 -22 z" fill="#DCDCDC" stroke="#101010" stroke-width="5" stroke-linejoin="round"/>
-  <text x="36" y="46" font-family="DejaVu Sans,Verdana,sans-serif" font-weight="bold" font-size="30" fill="#101010" text-anchor="middle" textLength="50" lengthAdjust="spacingAndGlyphs">LT</text>
+  <path fill="#101010" d="M10 22h8v18h15v8H10Zm23 0h30v8H52v18h-8V30H33Z"/>
 </svg>
