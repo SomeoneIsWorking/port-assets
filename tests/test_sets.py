@@ -29,7 +29,7 @@ import port_assets                                              # noqa: E402
 
 SMALLEST = 18          # xmen2's font-atlas cell; the tightest consumer so far
 MIN_INK = 0.04         # fraction of the cell that must be opaque
-FONT_INDEPENDENT_SETS = {"gamepad-xbox360"}
+FONT_INDEPENDENT_SETS = {"gamepad-xbox360", "touch-controls"}
 
 # Sets of glyphs that a player must be able to TELL APART. Membership is
 # spelled out rather than derived from the names, so adding a family is a
@@ -41,6 +41,9 @@ FAMILIES = {
         ["face_a", "face_b", "face_x", "face_y"],
         ["ls_up", "ls_down", "ls_left", "ls_right"],
         ["rs_up", "rs_down", "rs_left", "rs_right"],
+    ],
+    "touch-controls": [
+        ["direction_up", "direction_down", "direction_left", "direction_right"],
     ],
 }
 
