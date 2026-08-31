@@ -1,0 +1,11 @@
+{
+  "name": "touch-controls",
+  "description": "Generic cardinal-direction touch buttons",
+  "authored_by": "tools/draw_touch_controls.py",
+  "glyphs": [
+    "direction_down",
+    "direction_left",
+    "direction_right",
+    "direction_up"
+  ]
+}

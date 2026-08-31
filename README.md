@@ -13,12 +13,13 @@ once in a 72-unit box and checked at the smallest size anything ships them at.
 | `sets/devices` | Generic keyboard and gamepad silhouettes for device indicators and mapping-column headers. |
 | `sets/gamepad-xbox360` | Xbox 360 controller glyphs — face buttons, bumpers, triggers, d-pad (neutral **and one per direction**), sticks (click and each direction), Start/Back/Guide. |
 | `sets/keyboard` | Key caps. The **label is not baked in** — the consumer composites the key that is actually bound, so a rebind changes the prompt with no new asset. Taken from zelda3d, which is why it is here rather than in that project. |
+| `sets/touch-controls` | Standalone circular touch buttons for Up, Down, Left, and Right. |
 
 ## Using it from a project
 
 ```python
 import port_assets
-port_assets.sets()                             # ['devices', 'gamepad-xbox360', 'keyboard']
+port_assets.sets()                             # ['devices', 'gamepad-xbox360', 'keyboard', 'touch-controls']
 port_assets.names('gamepad-xbox360')           # every glyph, checked against the files
 port_assets.path('gamepad-xbox360', 'dpad_up') # -> .../dpad_up.svg
 port_assets.path('devices', 'keyboard')         # generic device indicator
@@ -75,6 +76,7 @@ python3 tools/sheet.py gamepad-xbox360            # look at it at 18px
 python3 tools/sheet.py gamepad-xbox360 --size 48  # and at a HUD size
 python3 tools/draw_xbox360.py --check             # the SVGs match their author script
 python3 tools/draw_devices.py --check              # the device silhouettes do too
+python3 tools/draw_touch_controls.py --check       # touch direction buttons stay consistent
 ```
 
 The `draw_*.py` scripts author the sets and the SVGs are **checked in** — a
