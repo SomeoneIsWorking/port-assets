@@ -1,5 +1,11 @@
 # Project state
 
+## Comparison baseline
+
+The baseline is every port drawing or sourcing its own inconsistent controller, keyboard, device, and
+touch prompts. port-assets provides one original, scalable, target-size-checked visual language that
+consumers can label and render for their actual bindings.
+
 ## Current focus
 
 None. The current shared glyph families are verified.
