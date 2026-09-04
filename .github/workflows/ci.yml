@@ -1,0 +1,36 @@
+name: Asset validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: asset-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux-raster-validation:
+    name: Linux / Python SVG raster validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Install the rasterizer used by the shipping check
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y imagemagick
+      - name: Run authoring and target-size checks
+        run: |
+          python tools/draw_devices.py --check
+          python tools/draw_keyboard.py --check
+          python tools/draw_touch_controls.py --check
+          python tools/draw_xbox360.py --check
+          python tests/test_sets.py
