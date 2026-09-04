@@ -48,12 +48,13 @@ FAMILIES = {
 }
 
 
-def cells(paths: dict[str, Path], size: int, tmp: Path) -> dict[str, bytes]:
+def cells(paths: dict[str, Path], size: int, tmp: Path,
+          rasterizer: str) -> dict[str, bytes]:
     out = {}
     for name, src in paths.items():
         dst = tmp / (name + ".rgba")
         run = subprocess.run(
-            ["magick", "-background", "none", str(src),
+            [rasterizer, "-background", "none", str(src),
              "-resize", "%dx%d" % (size, size),
              "-gravity", "center", "-extent", "%dx%d" % (size, size),
              "-depth", "8", "RGBA:" + str(dst)], capture_output=True)
@@ -100,12 +101,13 @@ def main() -> int:
                     "would depend on the fonts installed on the host"
                     % (set_name, name, count))
 
-    if not shutil.which("magick"):
+    rasterizer = shutil.which("magick") or shutil.which("convert")
+    if not rasterizer:
         if failures:
             for failure in failures:
                 print("  FAIL " + failure, file=sys.stderr)
             return 1
-        print("test_sets: SKIP -- ImageMagick's `magick` is not on PATH, so "
+        print("test_sets: SKIP -- ImageMagick's `magick`/`convert` is not on PATH, so "
               "nothing was rasterised at its target size. Manifest and "
               "path-only checks passed for %d glyph(s)." % path_only_checked)
         return 77                       # ctest SKIP
@@ -115,7 +117,7 @@ def main() -> int:
     for set_name, paths in resolved.items():
         with tempfile.TemporaryDirectory(prefix="port-assets-test-",
                                          dir=SCRATCH) as tmp:
-            raster = cells(paths, SMALLEST, Path(tmp))
+            raster = cells(paths, SMALLEST, Path(tmp), rasterizer)
 
         for name, px in raster.items():
             checked += 1
