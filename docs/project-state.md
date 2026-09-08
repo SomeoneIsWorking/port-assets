@@ -40,8 +40,10 @@ binding labels for consumers.
 
 ### S004 — Touch controls
 
-Evidence: the touch-control set has four direction-specific SVGs, an authoritative drawing script, and
-the same small-size family checks.
+Evidence: the touch-control set has four direction-specific SVGs and ten font-independent action
+silhouettes. `draw_touch_controls.py --check` reproduces all fourteen. Raster checks at 18px reject
+empty marks and identical direction, action, or ability family members. X-Men 2 consumes the action
+silhouettes with its own labels and button chrome; the shared set contains no game branding.
 
 ### S005 — Verification tooling
 

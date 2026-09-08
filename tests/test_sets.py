@@ -44,6 +44,8 @@ FAMILIES = {
     ],
     "touch-controls": [
         ["direction_up", "direction_down", "direction_left", "direction_right"],
+        ["attack", "smash", "use", "jump", "powers", "pause"],
+        ["power1", "power2", "power3", "power4"],
     ],
 }
 

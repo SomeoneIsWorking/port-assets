@@ -10,6 +10,7 @@ platform package, or Android integration.
 | --- | --- | --- | --- | --- |
 | SVG sets | Original device, controller, keyboard, and touch glyphs | `sets/` | `port_assets.path()` | `README.md` |
 | Authoring | Deterministic source for checked-in SVGs | `tools/` (`draw_*.py`) | each script's `--check` | `README.md` |
+| Touch artwork | Direction buttons and outlined action silhouettes independent of game branding, labels, and button chrome | `sets/touch-controls/`, `tools/draw_touch_controls.py` | `build()` | `README.md` |
 | Validation | Manifest, SVG, raster, and direction-family checks | `tests/test_sets.py` | `python tests/test_sets.py` | `docs/project-state.md` |
 | Hosted verification | Asset-free Linux raster validation | `.github/workflows/ci.yml` | GitHub Actions | `docs/project-state.md` |
 
