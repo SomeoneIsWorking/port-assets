@@ -1,11 +1,21 @@
 {
   "name": "touch-controls",
-  "description": "Generic cardinal-direction touch buttons",
+  "description": "Generic touch direction buttons and action silhouettes",
   "authored_by": "tools/draw_touch_controls.py",
   "glyphs": [
+    "attack",
     "direction_down",
     "direction_left",
     "direction_right",
-    "direction_up"
+    "direction_up",
+    "jump",
+    "pause",
+    "power1",
+    "power2",
+    "power3",
+    "power4",
+    "powers",
+    "smash",
+    "use"
   ]
 }
