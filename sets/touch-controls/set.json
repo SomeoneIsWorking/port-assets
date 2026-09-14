@@ -4,6 +4,7 @@
   "authored_by": "tools/draw_touch_controls.py",
   "glyphs": [
     "attack",
+    "camera",
     "direction_down",
     "direction_left",
     "direction_right",
@@ -16,6 +17,7 @@
     "power4",
     "powers",
     "smash",
+    "turbo",
     "use"
   ]
 }

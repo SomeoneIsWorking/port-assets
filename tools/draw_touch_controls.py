@@ -49,6 +49,12 @@ ACTIONS = {
               '<path d="m39 16-18 24h13l-2 16 19-25H38Z" fill="#101820" stroke="none"/>',
     "pause": '<rect x="17" y="13" width="13" height="46" rx="3"/>'
              '<rect x="42" y="13" width="13" height="46" rx="3"/>',
+    # Hold-to-fast-forward: two chevrons, the universal transport mark.
+    "turbo": '<path d="M14 20 40 36 14 52Z"/><path d="M34 20 60 36 34 52Z"/>',
+    # A view/camera toggle: body, viewfinder step, and a dark lens.
+    "camera": '<path d="M13 24h13l5-7h14l5 7h9q4 0 4 4v22q0 4-4 4H13q-4 0-4-4'
+              'V28q0-4 4-4Z"/>'
+              '<circle cx="37" cy="41" r="10" fill="#101820" stroke="none"/>',
     "power1": '<path d="M42 7 15 40h19l-5 25 29-38H39Z"/>',
     "power2": '<path d="m36 7 7 17 18-7-8 18 12 9-19 4-6 17-10-16'
               '-21 7 10-19L8 24l20 2Z"/>'
