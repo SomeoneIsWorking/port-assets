@@ -24,6 +24,7 @@ port_assets.names('gamepad-xbox360')           # every glyph, checked against th
 port_assets.path('gamepad-xbox360', 'dpad_up') # -> .../dpad_up.svg
 port_assets.path('devices', 'keyboard')         # generic device indicator
 python3 tools/draw_keyboard.py --label ENTER   # a labelled cap, to stdout
+python3 tools/draw_keyboard.py --label ESC --label-only  # its letters alone, for a cap stretched at runtime
 ```
 
 `resolve()` looks at `$PORT_ASSETS_DIR`, then `$SHARED_DIR/port-assets`, then

@@ -12,10 +12,17 @@ keyboard set finite -- there are a hundred key names and one cap.
     python3 tools/draw_keyboard.py --label ENTER   # print a labelled cap to stdout
     python3 tools/draw_keyboard.py --check
 
-`cap.svg` is the blank. `labelled(text)` composes one, and a consumer that
+`cap.svg` is the blank. `cap(width, label)` composes one, and a consumer that
 rasterises into a fixed cell should ask for the WIDE cap when the label is more
 than a character or two -- a five-letter key name squeezed into a square cell
 is the same unreadable mush that a two-letter one is at 18x18.
+
+`label(text)` is the same label WITHOUT the cap, in the same box. It is for a
+consumer whose cap width is decided at runtime by the text layout it sits in:
+stretching a labelled cap to that width stretches its letters and its rounded
+corners, so such a consumer stretches only the blank cap's straight middle and
+draws this label over it at its own proportions. Either way the letters are
+this set's, never the host game's font.
 """
 
 from __future__ import annotations
@@ -55,11 +62,34 @@ def cap(width: int = 72, label: str | None = None) -> str:
     if label:
         # textLength keeps a long name inside the cap instead of overflowing it
         # invisibly, which is what an unconstrained <text> does when rasterised.
-        body.append(
-            '<text x="%d" y="50" %s font-size="38" fill="%s" '
-            'text-anchor="middle" textLength="%d" '
-            'lengthAdjust="spacingAndGlyphs">%s</text>'
-            % (width // 2, FONT, INK, inner - 14, escape(label)))
+        body.append(_label_text(width, label, fit=width - 24))
+    return _svg(width, body)
+
+
+def label_width(text: str) -> int:
+    """The cap width, in viewBox units, that fits `text` at its natural size."""
+    return max(72, 34 + 26 * len(text))
+
+
+def label(text: str, width: int = 0) -> str:
+    """`text` in the cap's typeface, size and baseline, with no cap drawn.
+
+    Unlike `cap`, the letters keep their natural proportions: `textLength`
+    would stretch a lone "E" across a whole cap. A consumer that must fit a
+    long name scales the label uniformly instead."""
+    width = width or label_width(text)
+    return _svg(width, [_label_text(width, text)])
+
+
+def _label_text(width: int, text: str, fit: int = 0) -> str:
+    fitted = (' textLength="%d" lengthAdjust="spacingAndGlyphs"' % fit
+              if fit else "")
+    return ('<text x="%d" y="50" %s font-size="38" fill="%s" '
+            'text-anchor="middle"%s>%s</text>'
+            % (width // 2, FONT, INK, fitted, escape(text)))
+
+
+def _svg(width: int, body: list[str]) -> str:
     return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d 72" '
             'width="%d" height="72">\n' % (width, width)
             + "".join("  " + line + "\n" for line in body)
@@ -83,14 +113,19 @@ def build() -> dict[str, str]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--label", help="print a labelled cap instead of writing")
+    ap.add_argument("--label-only", action="store_true",
+                    help="with --label: print the label without its cap")
     ap.add_argument("--width", type=int, default=0,
                     help="cap width in viewBox units (default: fits the label)")
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
 
+    if args.label_only and not args.label:
+        ap.error("--label-only needs --label")
     if args.label:
-        width = args.width or max(72, 34 + 26 * len(args.label))
-        sys.stdout.write(cap(width, args.label))
+        width = args.width or label_width(args.label)
+        sys.stdout.write(label(args.label, width) if args.label_only
+                         else cap(width, args.label))
         return 0
 
     caps = build()
