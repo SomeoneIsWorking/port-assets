@@ -75,6 +75,20 @@ def live_text_nodes(path: Path) -> int:
                and node.tag.rsplit("}", 1)[-1] == "text")
 
 
+def key_font_failures() -> list[str]:
+    """The keyboard set's typeface ships, and its labels name it."""
+    font = port_assets.key_font()
+    if font.read_bytes()[:4] != b"\x00\x01\x00\x00":
+        return ["%s is not a TrueType font" % font]
+    sys.path.insert(0, str(ROOT / "tools"))
+    import draw_keyboard
+    family = ElementTree.fromstring(draw_keyboard.label("Esc")).find(
+        "{http://www.w3.org/2000/svg}text").get("font-family")
+    if family != "Noto Sans":
+        return ["a key label names %r, not the shipped key typeface" % family]
+    return []
+
+
 def main() -> int:
     failures = []
     resolved = {}
@@ -143,6 +157,8 @@ def main() -> int:
                             "%s: %s and %s rasterise IDENTICALLY at %dpx -- a "
                             "prompt cannot say which one it means"
                             % (set_name, a, b, SMALLEST))
+
+    failures.extend(key_font_failures())
 
     print("test_sets: %d set(s), %d glyph(s) rasterised at %dpx, %d family "
           "distinctness check(s), %d path-only glyph check(s)"

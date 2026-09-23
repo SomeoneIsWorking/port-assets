@@ -17,6 +17,8 @@ rasterises into a fixed cell should ask for the WIDE cap when the label is more
 than a character or two -- a five-letter key name squeezed into a square cell
 is the same unreadable mush that a two-letter one is at 18x18.
 
+Labels are lettered in the set's own typeface, `port_assets.key_font()`.
+
 `label(text)` is the same label WITHOUT the cap, in the same box. It is for a
 consumer whose cap width is decided at runtime by the text layout it sits in:
 stretching a labelled cap to that width stretches its letters and its rounded
@@ -34,7 +36,17 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "sets" / "keyboard"
 
-FONT = 'font-family="DejaVu Sans,Verdana,sans-serif" font-weight="bold"'
+# The set's own typeface, fonts/NotoSans-Bold-keys.ttf (tools/subset_key_font.py).
+# A renderer is handed that file; naming a family a host may not have made the
+# letters differ on every machine.
+FONT = 'font-family="Noto Sans" font-weight="bold"'
+# The label's metrics in the 72-unit cap box, for a consumer that letters a
+# key itself with the same font: size, baseline, and the margin either side
+# that a fitted label keeps from the cap's outer edge.
+CAP_UNITS = 72
+LABEL_SIZE = 38
+LABEL_BASELINE = 50
+LABEL_MARGIN = 12
 FACE_TOP, FACE_BOTTOM = "#F4F4F5", "#D8D8DA"
 EDGE, INK = "#3A3A3E", "#101014"
 
@@ -62,7 +74,7 @@ def cap(width: int = 72, label: str | None = None) -> str:
     if label:
         # textLength keeps a long name inside the cap instead of overflowing it
         # invisibly, which is what an unconstrained <text> does when rasterised.
-        body.append(_label_text(width, label, fit=width - 24))
+        body.append(_label_text(width, label, fit=width - 2 * LABEL_MARGIN))
     return _svg(width, body)
 
 
@@ -84,14 +96,15 @@ def label(text: str, width: int = 0) -> str:
 def _label_text(width: int, text: str, fit: int = 0) -> str:
     fitted = (' textLength="%d" lengthAdjust="spacingAndGlyphs"' % fit
               if fit else "")
-    return ('<text x="%d" y="50" %s font-size="38" fill="%s" '
+    return ('<text x="%d" y="%d" %s font-size="%d" fill="%s" '
             'text-anchor="middle"%s>%s</text>'
-            % (width // 2, FONT, INK, fitted, escape(text)))
+            % (width // 2, LABEL_BASELINE, FONT, LABEL_SIZE, INK, fitted,
+               escape(text)))
 
 
 def _svg(width: int, body: list[str]) -> str:
-    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d 72" '
-            'width="%d" height="72">\n' % (width, width)
+    return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" '
+            'width="%d" height="%d">\n' % (width, CAP_UNITS, width, CAP_UNITS)
             + "".join("  " + line + "\n" for line in body)
             + "</svg>\n")
 
