@@ -106,3 +106,11 @@ def path(set_name: str, glyph: str, start: Path | None = None) -> Path:
         raise SystemExit("port_assets: %s has no glyph %r. It has: %s"
                          % (set_name, glyph, ", ".join(names(set_name, start))))
     return here
+
+
+def key_font(start: Path | None = None) -> Path:
+    """The keyboard set's typeface: every key label is lettered in it."""
+    here = resolve(start) / "fonts" / "NotoSans-Bold-keys.ttf"
+    if not here.is_file():
+        raise SystemExit("port_assets: the key typeface %s is missing" % here)
+    return here
