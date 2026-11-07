@@ -104,3 +104,5 @@ anyone's assets.
 A directory under `sets/`, a `set.json` declaring its glyphs, and an entry in
 `FAMILIES` in the selftest for any group a player must tell apart. If it is
 authored by a script, add the script and wire its `--check`.
+
+Built with AI assistance (Claude and other LLMs).
