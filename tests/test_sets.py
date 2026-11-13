@@ -36,11 +36,14 @@ FONT_INDEPENDENT_SETS = {"gamepad-xbox360", "touch-controls"}
 # deliberate act and a typo cannot silently empty one.
 FAMILIES = {
     "gamepad-xbox360": [
-        ["dpad_up", "dpad_down", "dpad_left", "dpad_right"],
+        ["dpad_up", "dpad_down", "dpad_left", "dpad_right", "dpad_horizontal",
+         "dpad_vertical"],
         ["lb", "rb", "lt", "rt"],
         ["face_a", "face_b", "face_x", "face_y"],
-        ["ls_up", "ls_down", "ls_left", "ls_right"],
-        ["rs_up", "rs_down", "rs_left", "rs_right"],
+        ["ls_up", "ls_down", "ls_left", "ls_right", "ls_horizontal",
+         "ls_vertical"],
+        ["rs_up", "rs_down", "rs_left", "rs_right", "rs_horizontal",
+         "rs_vertical"],
     ],
     "touch-controls": [
         ["direction_up", "direction_down", "direction_left", "direction_right"],

@@ -147,12 +147,17 @@ ARM = {"up":    "M28 9 h16 v18 h-16 z",
        "right": "M45 28 h18 v16 h-18 z"}
 
 
+# An axis ("left or right") lights both of its arms.
+AXIS = {"horizontal": ("left", "right"), "vertical": ("up", "down")}
+
+
 def dpad(direction: str | None) -> str:
     body = ('<path d="%s" fill="%s" stroke="%s" stroke-width="6" '
             'stroke-linejoin="round"/>' % (CROSS, BODY_DARK, LIGHT))
     if direction is None:
         return svg(body)
-    return svg(body, '<path d="%s" fill="%s"/>' % (ARM[direction], WHITE))
+    return svg(body, *('<path d="%s" fill="%s"/>' % (ARM[d], WHITE)
+                       for d in AXIS.get(direction, (direction,))))
 
 
 # ---- sticks --------------------------------------------------------------
@@ -168,7 +173,8 @@ STICK_WEDGE = {
     "right": "M69 36 l-26 -22 v44 z",
 }
 STICK_CAP = {"up": (36, 46), "down": (36, 26), "left": (46, 36),
-             "right": (26, 36), "click": (36, 36)}
+             "right": (26, 36), "click": (36, 36), "horizontal": (36, 36),
+             "vertical": (36, 36)}
 
 
 def stick(side: str, what: str) -> str:
@@ -178,6 +184,12 @@ def stick(side: str, what: str) -> str:
            'stroke-width="6"/>' % (cx, cy, r, BODY_DARK, LIGHT))
     if what == "click":
         return svg(cap, '<circle cx="36" cy="36" r="9" fill="%s"/>' % WHITE)
+    if what in AXIS:                             # both wedges, the cap between
+        return svg(*('<path d="%s" fill="%s" stroke="%s" stroke-width="4" '
+                     'stroke-linejoin="round"/>'
+                     % (STICK_WEDGE[d], WHITE, BODY_DARK) for d in AXIS[what]),
+                   '<circle cx="36" cy="36" r="13" fill="%s" stroke="%s" '
+                   'stroke-width="6"/>' % (BODY_DARK, LIGHT))
     return svg('<path d="%s" fill="%s" stroke="%s" stroke-width="4" '
                'stroke-linejoin="round"/>'
                % (STICK_WEDGE[what], WHITE, BODY_DARK), cap)
@@ -194,11 +206,11 @@ def build() -> dict[str, str]:
     out["back"] = back()
     out["guide"] = guide()
     out["dpad"] = dpad(None)
-    for d in ("up", "down", "left", "right"):
+    for d in ("up", "down", "left", "right", "horizontal", "vertical"):
         out["dpad_" + d] = dpad(d)
     for side in ("ls", "rs"):
         out[side] = stick(side, "click")
-        for d in ("up", "down", "left", "right"):
+        for d in ("up", "down", "left", "right", "horizontal", "vertical"):
             out["%s_%s" % (side, d)] = stick(side, d)
     return out
 

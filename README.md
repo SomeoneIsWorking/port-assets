@@ -11,7 +11,7 @@ once in a 72-unit box and checked at the smallest size anything ships them at.
 | Set | What it is |
 |---|---|
 | `sets/devices` | Generic keyboard and gamepad silhouettes for device indicators and mapping-column headers. |
-| `sets/gamepad-xbox360` | Xbox 360 controller glyphs — face buttons, bumpers, triggers, d-pad (neutral **and one per direction**), sticks (click and each direction), Start/Back/Guide. |
+| `sets/gamepad-xbox360` | Xbox 360 controller glyphs — face buttons, bumpers, triggers, d-pad (neutral, **one per direction** and one per axis), sticks (click, each direction and each axis), Start/Back/Guide. |
 | `sets/keyboard` | Key caps. The **label is not baked in** — the consumer composites the key that is actually bound, so a rebind changes the prompt with no new asset. Labels are lettered in the set's own typeface, `fonts/NotoSans-Bold-keys.ttf` (`port_assets.key_font()`, SIL OFL 1.1, reproduced by `tools/subset_key_font.py`), so a consumer that letters a key at runtime draws the same letters. Taken from zelda3d, which is why it is here rather than in that project. |
 | `sets/touch-controls` | Circular direction buttons and font-independent action silhouettes: attack, smash, interact, jump, powers, pause, and four ability marks. |
 
