@@ -44,6 +44,10 @@ def build() -> dict[str, str]:
         "rupee": svg('  <path d="%s" fill="#35C24A" %s/>\n'
                      '  <path d="M36 15 48 25v22L36 57 24 47V25Z" fill="#8FE79A"/>\n'
                      % (RUPEE, outline)),
+        # A small key: a round bow with a hole, a shaft and two teeth.
+        "key": svg('  <path d="M36 6a15 15 0 0 1 5 29v31h-10v-6h-8v-8h8v-4h-8v-8h8v-5A15 15 0 0 1 36 6Z'
+                   'm0 9a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" fill="#C9CED6" fill-rule="evenodd" %s/>\n'
+                   % outline),
         # A button: a dark glass disc the game's view shows through.
         "ring": svg('  <circle cx="36" cy="36" r="31" fill="%s" fill-opacity="0.45" '
                     'stroke="%s" stroke-width="4"/>\n' % (DARK, LIGHT)),
@@ -66,7 +70,7 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = json.dumps({
         "name": "hud",
-        "description": "HUD frames and counters: hearts, a rupee, button rings, a meter",
+        "description": "HUD frames and counters: hearts, a rupee, a key, button rings, a meter",
         "authored_by": "tools/draw_hud.py",
         "glyphs": sorted(glyphs),
     }, indent=2) + "\n"
