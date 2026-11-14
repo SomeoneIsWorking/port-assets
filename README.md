@@ -12,6 +12,7 @@ once in a 72-unit box and checked at the smallest size anything ships them at.
 |---|---|
 | `sets/devices` | Generic keyboard and gamepad silhouettes for device indicators and mapping-column headers. |
 | `sets/gamepad-xbox360` | Xbox 360 controller glyphs — face buttons, bumpers, triggers, d-pad (neutral, **one per direction** and one per axis), sticks (click, each direction and each axis), Start/Back/Guide. |
+| `sets/hud` | The frames and counters a game HUD is put together from: a heart and its empty shell, a rupee, a round and a square glass button, a meter and its fill. The consumer composites what changes (a glyph or an item icon in a button, a cropped heart or fill). |
 | `sets/keyboard` | Key caps. The **label is not baked in** — the consumer composites the key that is actually bound, so a rebind changes the prompt with no new asset. Labels are lettered in the set's own typeface, `fonts/NotoSans-Bold-keys.ttf` (`port_assets.key_font()`, SIL OFL 1.1, reproduced by `tools/subset_key_font.py`), so a consumer that letters a key at runtime draws the same letters. Taken from zelda3d, which is why it is here rather than in that project. |
 | `sets/touch-controls` | Circular direction buttons and font-independent action silhouettes: attack, smash, interact, jump, powers, pause, and four ability marks. |
 
@@ -19,7 +20,7 @@ once in a 72-unit box and checked at the smallest size anything ships them at.
 
 ```python
 import port_assets
-port_assets.sets()                             # ['devices', 'gamepad-xbox360', 'keyboard', 'touch-controls']
+port_assets.sets()                             # ['devices', 'gamepad-xbox360', 'hud', 'keyboard', 'touch-controls']
 port_assets.names('gamepad-xbox360')           # every glyph, checked against the files
 port_assets.path('gamepad-xbox360', 'dpad_up') # -> .../dpad_up.svg
 port_assets.path('devices', 'keyboard')         # generic device indicator

@@ -1,0 +1,14 @@
+{
+  "name": "hud",
+  "description": "HUD frames and counters: hearts, a rupee, button rings, a meter",
+  "authored_by": "tools/draw_hud.py",
+  "glyphs": [
+    "bar",
+    "bar_fill",
+    "heart",
+    "heart_empty",
+    "ring",
+    "rupee",
+    "slot"
+  ]
+}
