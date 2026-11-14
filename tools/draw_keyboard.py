@@ -114,13 +114,41 @@ def escape(text: str) -> str:
                 .replace(">", "&gt;"))
 
 
+# The mouse's body in the 72-unit box, and the part of it each button is.
+MOUSE_BUTTONS = {
+    "left": '<path d="M18 30V24A18 18 0 0 1 36 6V30Z" fill="%s"/>' % INK,
+    "right": '<path d="M54 30V24A18 18 0 0 0 36 6V30Z" fill="%s"/>' % INK,
+    "middle": '<rect x="31" y="11" width="10" height="16" rx="5" fill="%s"/>' % INK,
+}
+
+
+def mouse(button: str) -> str:
+    """A mouse with one button inked: the prompt for that button.
+
+    Drawn in the cap's colours so it sits beside key caps as one family."""
+    body = [
+        '<defs>',
+        '  <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">',
+        '    <stop offset="0%%" stop-color="%s"/>' % FACE_TOP,
+        '    <stop offset="100%%" stop-color="%s"/>' % FACE_BOTTOM,
+        '  </linearGradient>',
+        '</defs>',
+        '<rect x="18" y="6" width="36" height="60" rx="18" ry="18" '
+        'fill="url(#cap)" stroke="%s" stroke-width="5"/>' % EDGE,
+        MOUSE_BUTTONS[button],
+        '<path d="M18 30H54M36 6V30" fill="none" stroke="%s" stroke-width="3"/>' % EDGE,
+    ]
+    return _svg(CAP_UNITS, body)
+
+
 def build() -> dict[str, str]:
-    """The checked-in files: the blanks, in the three widths a prompt needs."""
+    """The checked-in files: the blanks, in the three widths a prompt needs,
+    and the mouse's three buttons."""
     return {
         "cap": cap(72),
         "cap_wide": cap(120),
         "cap_extra_wide": cap(180),
-    }
+    } | {"mouse_" + button: mouse(button) for button in MOUSE_BUTTONS}
 
 
 def main() -> int:
@@ -165,7 +193,7 @@ def main() -> int:
 
     (OUT / "set.json").write_text(
         '{\n  "name": "keyboard",\n'
-        '  "description": "Keyboard key caps. The LABEL is composited by the '
+        '  "description": "Keyboard key caps and mouse buttons. A key\'s LABEL is composited by the '
         'consumer, not baked in -- see tools/draw_keyboard.py --label.",\n'
         '  "authored_by": "tools/draw_keyboard.py",\n'
         '  "glyphs": [%s]\n}\n'

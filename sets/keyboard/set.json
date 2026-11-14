@@ -1,6 +1,6 @@
 {
   "name": "keyboard",
-  "description": "Keyboard key caps. The LABEL is composited by the consumer, not baked in -- see tools/draw_keyboard.py --label.",
+  "description": "Keyboard key caps and mouse buttons. A key's LABEL is composited by the consumer, not baked in -- see tools/draw_keyboard.py --label.",
   "authored_by": "tools/draw_keyboard.py",
-  "glyphs": ["cap", "cap_extra_wide", "cap_wide"]
+  "glyphs": ["cap", "cap_extra_wide", "cap_wide", "mouse_left", "mouse_middle", "mouse_right"]
 }

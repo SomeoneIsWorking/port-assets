@@ -3,8 +3,9 @@
 
 The consumer composites what changes at runtime: a glyph or an item icon inside
 `ring` or `slot`, `heart` cropped over `heart_empty` for a part of a heart,
-`bar_fill` cropped over `bar` for a meter. Every glyph is a 72-unit box; `bar`
-and `bar_fill` are 216x24 and stretch along their length.
+`bar_fill` cropped over `bar` for a meter, `note` tinted with a song's colour.
+Every glyph is a 72-unit box; `bar` and `bar_fill` are 216x24 and stretch along
+their length, and `panel` is 108x216.
 
     python3 tools/draw_hud.py
     python3 tools/draw_hud.py --check
@@ -54,6 +55,13 @@ def build() -> dict[str, str]:
         # A touch-only item button: the same glass, squared.
         "slot": svg('  <rect x="5" y="5" width="62" height="62" rx="12" fill="%s" '
                     'fill-opacity="0.45" stroke="%s" stroke-width="4"/>\n' % (DARK, LIGHT)),
+        # A plate behind a group of buttons, 1:2; it hides what is under it.
+        "panel": svg('  <rect x="3" y="3" width="102" height="210" rx="12" fill="%s" '
+                     'fill-opacity="0.92" stroke="%s" stroke-width="3"/>\n' % (DARK, LIGHT),
+                     108, 216),
+        # A song: an eighth note in white, for the consumer to tint.
+        "note": svg('  <path d="M31 10h6c1 9 17 11 17 27-6-8-11-9-17-10v27a13 10 0 1 1-6-8.4Z" '
+                    'fill="#FFFFFF" %s/>\n' % outline),
         "bar": svg('  <rect x="3" y="3" width="210" height="18" rx="9" fill="%s" '
                    'fill-opacity="0.6" stroke="%s" stroke-width="4"/>\n' % (DARK, LIGHT),
                    216, 24),
@@ -70,7 +78,7 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = json.dumps({
         "name": "hud",
-        "description": "HUD frames and counters: hearts, a rupee, a key, button rings, a meter",
+        "description": "HUD frames and counters: hearts, a rupee, a key, button rings, a meter, a panel, a note",
         "authored_by": "tools/draw_hud.py",
         "glyphs": sorted(glyphs),
     }, indent=2) + "\n"

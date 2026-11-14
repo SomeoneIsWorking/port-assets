@@ -1,6 +1,6 @@
 {
   "name": "hud",
-  "description": "HUD frames and counters: hearts, a rupee, a key, button rings, a meter",
+  "description": "HUD frames and counters: hearts, a rupee, a key, button rings, a meter, a panel, a note",
   "authored_by": "tools/draw_hud.py",
   "glyphs": [
     "bar",
@@ -8,6 +8,8 @@
     "heart",
     "heart_empty",
     "key",
+    "note",
+    "panel",
     "ring",
     "rupee",
     "slot"
