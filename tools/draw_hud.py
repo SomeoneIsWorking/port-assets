@@ -5,7 +5,7 @@ The consumer composites what changes at runtime: a glyph or an item icon inside
 `ring` or `slot`, `heart` cropped over `heart_empty` for a part of a heart,
 `bar_fill` cropped over `bar` for a meter, `note` tinted with a song's colour.
 Every glyph is a 72-unit box; `bar` and `bar_fill` are 216x24 and stretch along
-their length, and `panel` is 108x216.
+their length, and `panel` is 108x240.
 
     python3 tools/draw_hud.py
     python3 tools/draw_hud.py --check
@@ -55,10 +55,11 @@ def build() -> dict[str, str]:
         # A touch-only item button: the same glass, squared.
         "slot": svg('  <rect x="5" y="5" width="62" height="62" rx="12" fill="%s" '
                     'fill-opacity="0.45" stroke="%s" stroke-width="4"/>\n' % (DARK, LIGHT)),
-        # A plate behind a group of buttons, 1:2; it hides what is under it.
-        "panel": svg('  <rect x="3" y="3" width="102" height="210" rx="12" fill="%s" '
-                     'fill-opacity="0.92" stroke="%s" stroke-width="3"/>\n' % (DARK, LIGHT),
-                     108, 216),
+        # A plate behind a group of buttons, 9:20; it hides what is under it.
+        "panel": svg('  <rect width="108" height="240" fill="%s"/>\n'
+                     '  <rect x="3" y="3" width="102" height="234" rx="12" fill="none" '
+                     'stroke="%s" stroke-opacity="0.5" stroke-width="2"/>\n' % (DARK, LIGHT),
+                     108, 240),
         # A song: an eighth note in white, for the consumer to tint.
         "note": svg('  <path d="M31 10h6c1 9 17 11 17 27-6-8-11-9-17-10v27a13 10 0 1 1-6-8.4Z" '
                     'fill="#FFFFFF" %s/>\n' % outline),
