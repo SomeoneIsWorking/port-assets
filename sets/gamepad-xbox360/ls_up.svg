@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72">
   <path d="M36 3 l22 26 h-44 z" fill="#FFFFFF" stroke="#303030" stroke-width="4" stroke-linejoin="round"/>
   <circle cx="36" cy="46" r="16" fill="#303030" stroke="#DCDCDC" stroke-width="6"/>
+  <path transform="translate(36 46) scale(0.9)" fill="#FFFFFF" fill-rule="evenodd" d="M-5-9h4.6v13.6H7V9H-5Z"/>
 </svg>

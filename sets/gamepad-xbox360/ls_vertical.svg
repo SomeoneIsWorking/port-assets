@@ -2,4 +2,5 @@
   <path d="M36 3 l22 26 h-44 z" fill="#FFFFFF" stroke="#303030" stroke-width="4" stroke-linejoin="round"/>
   <path d="M36 69 l22 -26 h-44 z" fill="#FFFFFF" stroke="#303030" stroke-width="4" stroke-linejoin="round"/>
   <circle cx="36" cy="36" r="13" fill="#303030" stroke="#DCDCDC" stroke-width="6"/>
+  <path transform="translate(36 36) scale(0.75)" fill="#FFFFFF" fill-rule="evenodd" d="M-5-9h4.6v13.6H7V9H-5Z"/>
 </svg>

@@ -177,22 +177,41 @@ STICK_CAP = {"up": (36, 46), "down": (36, 26), "left": (46, 36),
              "vertical": (36, 36)}
 
 
+# The cap carries its side's letter: the two sticks were one picture, and a
+# prompt naming both ("press R3, look around with the left stick") drew the
+# same glyph twice.
+STICK_LETTER = {
+    "ls": "M-5-9h4.6v13.6H7V9H-5Z",
+    "rs": ("M-6-9h7.2c4.4 0 7 2.2 7 5.6 0 2.4-1.3 4.1-3.4 4.9L9 9H3.8"
+           "L0.4 1.7H-1.4V9H-6Zm4.6 3.8v3.4H1c1.6 0 2.5-.6 2.5-1.7"
+           "S2.6-5.2 1-5.2Z"),
+}
+
+
+def stick_letter(side: str, cx: int, cy: int, scale: float) -> str:
+    return ('<path transform="translate(%d %d) scale(%g)" fill="%s" '
+            'fill-rule="evenodd" d="%s"/>'
+            % (cx, cy, scale, WHITE, STICK_LETTER[side]))
+
+
 def stick(side: str, what: str) -> str:
     cx, cy = STICK_CAP[what]
     r = 20 if what == "click" else 16
     cap = ('<circle cx="%d" cy="%d" r="%d" fill="%s" stroke="%s" '
            'stroke-width="6"/>' % (cx, cy, r, BODY_DARK, LIGHT))
     if what == "click":
-        return svg(cap, '<circle cx="36" cy="36" r="9" fill="%s"/>' % WHITE)
+        return svg(cap, stick_letter(side, 36, 36, 1.2))
     if what in AXIS:                             # both wedges, the cap between
         return svg(*('<path d="%s" fill="%s" stroke="%s" stroke-width="4" '
                      'stroke-linejoin="round"/>'
                      % (STICK_WEDGE[d], WHITE, BODY_DARK) for d in AXIS[what]),
                    '<circle cx="36" cy="36" r="13" fill="%s" stroke="%s" '
-                   'stroke-width="6"/>' % (BODY_DARK, LIGHT))
+                   'stroke-width="6"/>' % (BODY_DARK, LIGHT),
+                   stick_letter(side, 36, 36, 0.75))
     return svg('<path d="%s" fill="%s" stroke="%s" stroke-width="4" '
                'stroke-linejoin="round"/>'
-               % (STICK_WEDGE[what], WHITE, BODY_DARK), cap)
+               % (STICK_WEDGE[what], WHITE, BODY_DARK), cap,
+               stick_letter(side, cx, cy, 0.9))
 
 
 # ---- the set -------------------------------------------------------------
