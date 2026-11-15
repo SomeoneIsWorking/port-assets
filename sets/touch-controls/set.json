@@ -1,6 +1,6 @@
 {
   "name": "touch-controls",
-  "description": "Generic touch direction buttons and action silhouettes",
+  "description": "Generic touch direction buttons, action silhouettes and controller marks",
   "authored_by": "tools/draw_touch_controls.py",
   "glyphs": [
     "attack",
@@ -9,6 +9,10 @@
     "direction_left",
     "direction_right",
     "direction_up",
+    "face_circle",
+    "face_cross",
+    "face_square",
+    "face_triangle",
     "jump",
     "pause",
     "power1",
@@ -16,7 +20,13 @@
     "power3",
     "power4",
     "powers",
+    "select",
+    "shoulder_l1",
+    "shoulder_l2",
+    "shoulder_r1",
+    "shoulder_r2",
     "smash",
+    "start",
     "turbo",
     "use"
   ]

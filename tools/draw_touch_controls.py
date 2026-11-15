@@ -66,6 +66,29 @@ ACTIONS = {
 }
 
 
+# Controller marks drawn as strokes: the PlayStation face symbols, the shoulder
+# labels and Start/Select. Letters are paths, so no font is involved.
+MARKS = {
+    "face_cross": "M20 20 52 52M52 20 20 52",
+    "face_circle": "M36 16a20 20 0 1 0 0.01 0Z",
+    "face_square": "M18 18h36v36H18Z",
+    "face_triangle": "M36 14 58 52H14Z",
+    "shoulder_l1": "M14 20v32h15M44 27l7-7v32",
+    "shoulder_r1": "M13 52V20h10a8 8 0 0 1 0 16H13m10 0 8 16M44 27l7-7v32",
+    "shoulder_l2": "M12 20v32h15M38 27q1-7 8-7t8 7q0 6-16 25h16",
+    "shoulder_r2": "M11 52V20h10a8 8 0 0 1 0 16H11m10 0 8 16M38 27q1-7 8-7t8 7q0 6-16 25h16",
+    "start": "M24 18 52 36 24 54Z",
+    "select": "M16 27h40v18H16Z",
+}
+
+
+def mark_icon(path: str) -> str:
+    return (HEAD + '  <g fill="none" stroke-linecap="round" stroke-linejoin="round">\n'
+            '    <path d="%s" stroke="%s" stroke-width="13"/>\n'
+            '    <path d="%s" stroke="%s" stroke-width="6"/>\n  </g>\n' % (path, DARK, path, LIGHT)
+            + TAIL)
+
+
 def action_icon(markup: str) -> str:
     return (HEAD + '  <g fill="%s" stroke="%s" stroke-width="4" '
             'stroke-linecap="round" stroke-linejoin="round">\n    '
@@ -84,7 +107,8 @@ def button(direction: str) -> str:
 
 def build() -> dict[str, str]:
     return {**{"direction_" + direction: button(direction) for direction in ARROWS},
-            **{name: action_icon(markup) for name, markup in ACTIONS.items()}}
+            **{name: action_icon(markup) for name, markup in ACTIONS.items()},
+            **{name: mark_icon(path) for name, path in MARKS.items()}}
 
 
 def main() -> int:
@@ -119,7 +143,7 @@ def main() -> int:
 
     (OUT / "set.json").write_text(json.dumps({
         "name": "touch-controls",
-        "description": "Generic touch direction buttons and action silhouettes",
+        "description": "Generic touch direction buttons, action silhouettes and controller marks",
         "authored_by": "tools/draw_touch_controls.py",
         "glyphs": sorted(glyphs),
     }, indent=2) + "\n", encoding="ascii")
